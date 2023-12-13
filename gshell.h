@@ -77,7 +77,7 @@
 
 
 /* If on a 8-bit AVR Microcontroller, store text data in flash memory */
-#if defined(AVR) && !defined(__GNUG__)	// AVR + C Compiler (GCC)
+#if defined(AVR) && !defined(__GNUG__) && !defined(ARDUINO)	// AVR + C Compiler (GCC)
 	#include <avr/pgmspace.h>
 	#define _GMEMX	__memx
 	#define _PRGMX
@@ -200,6 +200,9 @@ extern const gshell_cmd_t *const gshell_list_commands;
 extern const uint8_t gshell_list_num_commands;
 #endif 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * @brief Initialise the shell
@@ -360,6 +363,10 @@ void gshell_printf_flash(const _GMEMX char *progmem_s, ...);
  * @param ...		Additional, optional printf-style arguments
  */
 void gshell_log_flash(enum glog_level loglvl, const _GMEMX char *logText, ...);
+
+#ifdef __cplusplus
+}
+#endif
 
 /**
  * @brief Logging macro
