@@ -54,7 +54,7 @@
 /**
  * @brief Use CR instead of LF to detect a new-line/enter keypress
  */
-//#define G_CR_INSTEADOF_LF
+// #define G_CR_INSTEADOF_LF
 
 /**
  * @brief Receive Buffer, also defines a AVR temporary buffer size (2x on AVR)
@@ -77,9 +77,9 @@
 
 
 /* If on a 8-bit AVR Microcontroller, store text data in flash memory */
-#if defined(AVR) && !defined(__GNUG__) && !defined(ARDUINO)	// AVR + C Compiler (GCC)
+#if defined(AVR) && !defined(__GNUG__)// && !defined(ARDUINO)	// AVR + C Compiler (GCC)
 	#include <avr/pgmspace.h>
-	#define _GMEMX	__memx
+	#define _GMEMX	__flash
 	#define _PRGMX
 #elif defined(AVR) && defined(__GNUG__)	// AVR + C++ Compiler (G++ workaround)
 	#include <avr/pgmspace.h>
@@ -133,6 +133,10 @@
 #define C_BACKSPCE2		0x7F
 #define C_WITESPCE		' '
 #define C_NULLCHAR		'\0'
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * @brief Shell command structure
@@ -198,10 +202,6 @@ enum gshell_return{
 #ifdef ENABLE_STATIC_COMMANDS
 extern const gshell_cmd_t *const gshell_list_commands;
 extern const uint8_t gshell_list_num_commands;
-#endif 
-
-#ifdef __cplusplus
-extern "C" {
 #endif
 
 /**

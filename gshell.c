@@ -31,8 +31,8 @@
 
 /* String-Functions for strings stored in flash memory */
 #ifdef AVR
-	#define _G_STRNLEN(key,length)		strnlen_PF((__uint24)(key),length)
-	#define _G_STRNCMP(str,key,length)	strncmp_PF(str,(__uint24)(key),length)
+	#define _G_STRNLEN(key,length)		strnlen_PF((char*)(key),length)
+	#define _G_STRNCMP(str,key,length)	strncmp_PF(str,(char*)(key),length)
 #else
 	#define _G_STRNLEN(key,length)		strnlen(key,length)
 	#define _G_STRNCMP(str,key,length)	strncmp(str,key,length)
@@ -697,7 +697,7 @@ void gshell_printf_flash(const _GMEMX char *progmem_s, ...)
 	// Copy the program-memory string into the SRAM memory, store it in the
 	// additional vsprintf buffer for further processing
 	// Handle printf-processing via vsprintf
-	strncpy_PF(sInternals.tempBuf, (__uint24)progmem_s, G_RX_BUFSIZE);
+	strncpy_PF(sInternals.tempBuf, (char*)progmem_s, G_RX_BUFSIZE);
 	vsprintf(sInternals.vsprintf_buf, sInternals.tempBuf, args);
 #else
 	// Handle printf-processing via vsprintf
@@ -737,7 +737,7 @@ void gshell_log_flash(enum glog_level loglvl, const _GMEMX char *logText, ...)
 
 	// Similar "printf / vsprintf" processing as in gshell_printf_flash
 #ifdef AVR
-	strncpy_PF(sInternals.tempBuf, (__uint24)logText, G_RX_BUFSIZE);
+	strncpy_PF(sInternals.tempBuf, (char*)logText, G_RX_BUFSIZE);
 	va_start(args, logText);
 	vsprintf(sInternals.vsprintf_buf, sInternals.tempBuf, args);
     va_end(args);
